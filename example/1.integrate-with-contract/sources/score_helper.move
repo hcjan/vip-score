@@ -11,7 +11,7 @@ module deployer::score_helper {
     const EINVALID_SCORE: u64 = 2;
     const EALREADY_REGISTERED: u64 = 3;
 
-    friend deployer::example_with_scoring;
+    friend deployer::score_distribute;
 
     // ScoreStore is needed to score functions triggered by user
     struct ScoreStore has key {
