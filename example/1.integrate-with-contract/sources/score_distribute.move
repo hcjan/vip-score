@@ -5,7 +5,7 @@ module score::score_distribute {
     use std::block::{get_block_info}; 
     use std::simple_map::{Self, SimpleMap, borrow, borrow_mut, contains_key};
     use minitia_std::vip_score;
-    use deployer::score_helper;
+    use score::score_helper;
     
 
     const ESpotSigner: u64 = 1;
@@ -42,8 +42,8 @@ module score::score_distribute {
         });
 
         move_to(deployer, Auth {
-            spot_signer_address: @deployer, // Set to deployer address initially
-            perp_signer_address: @deployer, // Set to deployer address initially
+            spot_signer_address: @score, // Set to deployer address initially
+            perp_signer_address: @score, // Set to deployer address initially
         });
 
         move_to(deployer, PerpInfo {
@@ -63,22 +63,22 @@ module score::score_distribute {
     }
 
     public entry fun set_spot_signer(deployer: &signer, new_signer: address) acquires Auth {
-        assert!(signer::address_of(deployer) == @deployer, EUNAUTHORIZED);
-        let auth = borrow_global_mut<Auth>(@deployer);
+        assert!(signer::address_of(deployer) == @score, EUNAUTHORIZED);
+        let auth = borrow_global_mut<Auth>(@score);
         auth.spot_signer_address = new_signer;
     }
 
     public entry fun set_perp_signer(deployer: &signer, new_signer: address) acquires Auth {
-        assert!(signer::address_of(deployer) == @deployer, EUNAUTHORIZED);
-        let auth = borrow_global_mut<Auth>(@deployer);
+        assert!(signer::address_of(deployer) == @score, EUNAUTHORIZED);
+        let auth = borrow_global_mut<Auth>(@score);
         auth.perp_signer_address = new_signer;
     }
 
 
     public entry fun spot_dex_add_liquidity(spot_signer: &signer, account: address) acquires Auth, SpotDexInfo{
-        let auth = borrow_global<Auth>(@deployer);
+        let auth = borrow_global<Auth>(@score);
         assert!(signer::address_of(spot_signer) == auth.spot_signer_address, ESpotSigner);
-        let spot_dex_info = borrow_global_mut<SpotDexInfo>(@deployer);
+        let spot_dex_info = borrow_global_mut<SpotDexInfo>(@score);
         let current_day = get_day();
 
         if (!simple_map::contains_key(&spot_dex_info.add_liquidity_updated, &account)) {
@@ -95,10 +95,10 @@ module score::score_distribute {
     }
 
     public entry fun spot_dex_swap(spot_signer: &signer, account: address)acquires Auth, SpotDexInfo {
-        let auth = borrow_global<Auth>(@deployer);
+        let auth = borrow_global<Auth>(@score);
         assert!(signer::address_of(spot_signer) == auth.spot_signer_address, ESpotSigner);  
          
-        let spot_dex_info = borrow_global_mut<SpotDexInfo>(@deployer);
+        let spot_dex_info = borrow_global_mut<SpotDexInfo>(@score);
         let current_day = get_day();
 
         if (!contains_key(&spot_dex_info.swap_update_times, &account)) {
@@ -123,9 +123,9 @@ module score::score_distribute {
     
 
     public entry fun perp_add_liquidity(perp_signer: &signer, account: address) acquires Auth, PerpInfo {
-        let auth = borrow_global<Auth>(@deployer);
+        let auth = borrow_global<Auth>(@score);
         assert!(signer::address_of(perp_signer) == auth.perp_signer_address, EPerpSigner);  
-        let perp_info = borrow_global_mut<PerpInfo>(@deployer);
+        let perp_info = borrow_global_mut<PerpInfo>(@score);
         let current_day = get_day();
 
         if (!simple_map::contains_key(&perp_info.add_liquidity_updated, &account)) {
@@ -141,9 +141,9 @@ module score::score_distribute {
         }
     
      public entry fun perp_trade(perp_signer: &signer, account: address)acquires Auth, PerpInfo {
-        let auth = borrow_global<Auth>(@deployer);
+        let auth = borrow_global<Auth>(@score);
         assert!(signer::address_of(perp_signer) == auth.perp_signer_address, EPerpSigner);  
-        let perp_info = borrow_global_mut<PerpInfo>(@deployer);
+        let perp_info = borrow_global_mut<PerpInfo>(@score);
         let current_day = get_day();
 
         if (!simple_map::contains_key(&perp_info.trade_update_times, &account)) {
