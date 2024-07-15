@@ -1,6 +1,6 @@
 // this is an example of how to use scoring in the contract.
 // policy for scoring is defined in the function body.
-module deployer::score_distribute {
+module score::score_distribute {
     use std::signer;
     use std::block::{get_block_info}; 
     use std::simple_map::{Self, SimpleMap, borrow, borrow_mut, contains_key};

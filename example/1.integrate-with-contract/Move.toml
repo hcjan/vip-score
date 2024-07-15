@@ -8,4 +8,4 @@ MinitiaStdlib = { git = "https://github.com/initia-labs/move-natives", subdir = 
 
 [addresses]
 minitiad_std =  "0x1"
-deployer = "0x2"
+score = "0x2"

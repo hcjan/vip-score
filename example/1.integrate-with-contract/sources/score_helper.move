@@ -1,6 +1,6 @@
 // this module is used to help deployer to interact with vip_score module
 // note that `score_helper.move` should be deployed under the same account with `example_with_scoring.move`
-module deployer::score_helper {
+module score::score_helper {
     use std::error;
     use std::signer;
 
